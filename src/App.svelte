@@ -1,4 +1,5 @@
 <script>
+import Post from './Post.svelte';
 
 let postNum;
 
@@ -8,7 +9,12 @@ async function getPostItem(id) {
   
   console.log(post);
 
-  return post;
+  if (res.ok) {
+			return post;
+	} else {
+		throw new Error(post);
+	}
+ 
     
 }
 
@@ -30,8 +36,10 @@ let promise = getPostItem();
 
 {:then post}
 
-<h2>{post.title}</h2>
-<p>{post.body}<p>
+<Post post={post} />
+
+{:catch error}
+<p style="color:red">No post data found</p>
 
 {/await}
 
