@@ -12,26 +12,33 @@ async function getPostItem(id) {
     
 }
 
+async function getAllPosts() {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const posts = await res.json();
+
+  console.log(posts);
+
+  return posts;
+}
+
 function handleClick() {
   promise = getPostItem(postNum);
 }
 
-let promise = getPostItem();
+let promise = getAllPosts();
 
 </script>
-
-<input type='number' bind:value={postNum}/>
-<button on:click={handleClick}>Get Post</button>
 
 <main>
 
 {#await promise}
 <p>Waiting...</p>
 
-{:then post}
+{:then posts}
 
-<h2>{post.title}</h2>
-<p>{post.body}<p>
+  {#each posts as post}
+    <a href="https://jsonplaceholder.typicode.com/posts/{post.id}"><h2>{post.id}: {post.title}</h2></a>
+  {/each}
 
 {/await}
 
